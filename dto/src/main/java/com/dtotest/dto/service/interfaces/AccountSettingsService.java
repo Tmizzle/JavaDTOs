@@ -4,10 +4,12 @@ import com.dtotest.dto.dao.AccountSettingsRepo;
 import com.dtotest.dto.entity.AccountSettings;
 import com.dtotest.dto.service.dto.AccountSettingsDTO;
 import com.dtotest.dto.service.mapper.AccountSettingsMapper;
+import com.dtotest.dto.service.mapper.AccountSettingsMapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -15,28 +17,27 @@ import java.util.stream.Collectors;
 @Service
 public class AccountSettingsService {
 
-    private final AccountSettingsRepo accountSettingsRepo;
-    private final AccountSettingsMapper accountSettingsMapper;
-
-
     @Autowired
-    public AccountSettingsService(AccountSettingsRepo accountSettingsRepo, AccountSettingsMapper accountSettingsMapper) {
-        this.accountSettingsRepo = accountSettingsRepo;
-        this.accountSettingsMapper = accountSettingsMapper;
-    }
+    private AccountSettingsRepo accountSettingsRepo;
+    @Autowired
+    private AccountSettingsMapper accountSettingsMapper;
+
 
     public List<AccountSettingsDTO> getAccountSettings() {
-        return accountSettingsRepo.findAll()
-                .stream()
-                .map(accountSettingsMapper)
-                .collect(Collectors.toList());
+        List<AccountSettings> accountSettings = accountSettingsRepo.findAll();
+        List<AccountSettingsDTO> accountSettingsDTOS = new ArrayList<>();
+        for(AccountSettings acc : accountSettings) {
+            accountSettingsDTOS.add(accountSettingsMapper.entityToDTO(acc));
+        }
+
+        return accountSettingsDTOS;
     }
 
-    public List<AccountSettingsDTO> GetAccountSettingsById(Integer id){
-        return accountSettingsRepo.findById(id)
-                .stream()
-                .map(accountSettingsMapper)
-                .collect(Collectors.toList());
+
+   public AccountSettingsDTO getAccountSettingsById(Integer id){
+        AccountSettings acc = accountSettingsRepo.findById(id).orElseThrow(() -> new IllegalStateException("" +
+                "account setting with id " + id + " does not exist"));
+        return accountSettingsMapper.entityToDTO(acc);
     }
 
     @Transactional
