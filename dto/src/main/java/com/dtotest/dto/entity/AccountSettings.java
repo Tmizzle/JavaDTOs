@@ -13,15 +13,36 @@ public class AccountSettings {
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
     )
-
+    @Column(
+            updatable = false
+    )
     private Integer id;
 
-    private Integer id_country;
+    @OneToOne(targetEntity = Country.class, cascade = CascadeType.ALL)
+    @JoinColumn(
+            name = "id_country",
+            referencedColumnName = "id",
+            nullable = false
+    )
+    private Country country;
 
+    @Column(
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String timezone;
+
+    @Column(
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
 
     private String language;
 
+    @Column(
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String theme;
 
 }

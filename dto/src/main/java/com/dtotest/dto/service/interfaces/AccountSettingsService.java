@@ -4,19 +4,11 @@ import com.dtotest.dto.dao.AccountSettingsRepo;
 import com.dtotest.dto.entity.AccountSettings;
 import com.dtotest.dto.service.dto.AccountSettingsDTO;
 import com.dtotest.dto.service.mapper.AccountSettingsMapper;
-import com.dtotest.dto.service.mapper.AccountSettingsMapperImpl;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class AccountSettingsService {

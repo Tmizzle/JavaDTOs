@@ -3,6 +3,7 @@ package com.dtotest.dto.service.mapper;
 import com.dtotest.dto.entity.AccountSettings;
 import com.dtotest.dto.service.dto.AccountSettingsDTO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
