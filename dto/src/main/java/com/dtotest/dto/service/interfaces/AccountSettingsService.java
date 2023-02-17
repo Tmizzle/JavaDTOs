@@ -17,20 +17,19 @@ import java.util.stream.Collectors;
 @Service
 public class AccountSettingsService {
 
-    @Autowired
-    private AccountSettingsRepo accountSettingsRepo;
-    @Autowired
-    private AccountSettingsMapper accountSettingsMapper;
+    private final AccountSettingsRepo accountSettingsRepo;
+    private final AccountSettingsMapper accountSettingsMapper;
+
+    public AccountSettingsService(AccountSettingsRepo accountSettingsRepo, AccountSettingsMapper accountSettingsMapper) {
+        this.accountSettingsRepo = accountSettingsRepo;
+        this.accountSettingsMapper = accountSettingsMapper;
+    }
 
 
     public List<AccountSettingsDTO> getAccountSettings() {
         List<AccountSettings> accountSettings = accountSettingsRepo.findAll();
-        List<AccountSettingsDTO> accountSettingsDTOS = new ArrayList<>();
-        for(AccountSettings acc : accountSettings) {
-            accountSettingsDTOS.add(accountSettingsMapper.entityToDTO(acc));
-        }
-
-        return accountSettingsDTOS;
+        List<AccountSettingsDTO> accountSettingsDTOs = accountSettingsMapper.entitiesToDTOs(accountSettings);
+        return accountSettingsDTOs;
     }
 
 

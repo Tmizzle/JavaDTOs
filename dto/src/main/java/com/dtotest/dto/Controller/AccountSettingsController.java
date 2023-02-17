@@ -19,14 +19,15 @@ public class AccountSettingsController {
         this.accountSettingsService = accountSettingsService;
     }
 
+    @GetMapping
+    public List<AccountSettingsDTO> getAccountSettings(){
+        return accountSettingsService.getAccountSettings();
+    }
+
     @GetMapping(path = "{id}")
     public AccountSettingsDTO getAccountSettingsById(@PathVariable("id") Integer id){
         return accountSettingsService.getAccountSettingsById(id);
     }
-    /*@GetMapping(path = "{id}")
-    public List<AccountSettingsDTO> getAccountSettingsById(@PathVariable("id") Integer id){
-        return accountSettingsService.GetAccountSettingsById(id);
-    }*/
     @PutMapping(path = "{id}")
     public void updateAccountSettings(@PathVariable("id") Integer Id,
                               @RequestParam(required = false) String language,
