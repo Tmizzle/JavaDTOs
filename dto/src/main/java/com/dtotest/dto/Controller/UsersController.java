@@ -41,13 +41,15 @@ public class UsersController {
                                       @RequestParam(required = false) String lastName,
                                       @RequestParam(required = false) String middleName,
                                       @RequestParam(required = false) String gender,
-                                      @RequestParam(required = false) String birthDateStr) throws ParseException {
-        if (birthDateStr != null && !birthDateStr.isEmpty()) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate birthDate = LocalDate.parse(birthDateStr, formatter);
-        LocalDateTime birthDateTime = birthDate.atStartOfDay();
-        Date date = Date.from(birthDateTime.atZone(ZoneId.systemDefault()).toInstant());
-    {
-        usersService.updateUsers(Id, username, email, firstName, lastName, middleName, gender, date);
-    }
-}}}
+                                      @RequestParam(required = false) String birthDateStr){
+        if(birthDateStr != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate birthDate = LocalDate.parse(birthDateStr, formatter);
+            LocalDateTime birthDateTime = birthDate.atStartOfDay();
+            Date date = Date.from(birthDateTime.atZone(ZoneId.systemDefault()).toInstant());
+            usersService.updateUsers(Id, username, email, firstName, lastName, middleName, gender, date);
+        } else {
+            usersService.updateUsers(Id, username, email, firstName, lastName, middleName, gender, null);
+        }
+}
+}

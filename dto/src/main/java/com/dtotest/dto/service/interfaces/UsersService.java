@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -49,11 +52,14 @@ public class UsersService {
                             String gender,
                             Date date
     ) {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        Date currentDate = java.util.Date.from(currentDateTime.atZone(ZoneId.systemDefault()).toInstant());
         Users users = userRepo.findById(Id).orElseThrow(() -> new IllegalStateException("" +
                 "account setting with id " + Id + " does not exist"));
 
         if (username != null && username.length() > 0 && !Objects.equals(users.getUsername(), username)) {
             users.setUsername(username);
+            users.setUpdatedAt(currentDate);
         }
         if (email != null && email.length() > 0 && !Objects.equals(users.getEmail(), email)) {
             users.setEmail(email);
