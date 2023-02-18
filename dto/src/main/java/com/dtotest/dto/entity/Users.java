@@ -1,5 +1,6 @@
 package com.dtotest.dto.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -50,6 +51,7 @@ public class Users {
             name = "birth_date",
             nullable = false
     )
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthDate;
     private String password;
     @Column(
@@ -83,10 +85,12 @@ public class Users {
     @Column(
             name = "updated_at"
     )
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date updatedAt;
     @Column(
             name = "created_at"
     )
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;
 
 }

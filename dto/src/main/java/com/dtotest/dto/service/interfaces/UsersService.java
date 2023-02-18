@@ -46,8 +46,8 @@ public class UsersService {
                             String firstName,
                             String lastName,
                             String middleName,
-                            String gender
-                            /*Date birthDate*/
+                            String gender,
+                            Date date
     ) {
         Users users = userRepo.findById(Id).orElseThrow(() -> new IllegalStateException("" +
                 "account setting with id " + Id + " does not exist"));
@@ -70,8 +70,8 @@ public class UsersService {
         if (gender != null && gender.length() > 0 && !Objects.equals(users.getGender(), gender)) {
             users.setGender(gender);
         }
-/*        if (birthDate != null && !Objects.equals(users.getBirthDate(), birthDate)) {
-            users.setBirthDate(birthDate);
-        }*/
+        if (date != null && !Objects.equals(users.getBirthDate(), date)) {
+            users.setBirthDate(date);
+        }
     }
 }

@@ -4,6 +4,10 @@ server:
     include-message: always
 
 spring:
+  jackson:
+    time-zone: Europe/Zagreb
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
   datasource:
     url: jdbc:postgresql://localhost:5432/getihub
     username: admin

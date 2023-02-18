@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -36,12 +40,14 @@ public class UsersController {
                                       @RequestParam(required = false) String firstName,
                                       @RequestParam(required = false) String lastName,
                                       @RequestParam(required = false) String middleName,
-                                      @RequestParam(required = false) String gender)
-                                      /*@RequestParam(required = false) String birthDateStr) throws ParseException {
+                                      @RequestParam(required = false) String gender,
+                                      @RequestParam(required = false) String birthDateStr) throws ParseException {
         if (birthDateStr != null && !birthDateStr.isEmpty()) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date birthDate = dateFormat.parse(birthDateStr);*/
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate birthDate = LocalDate.parse(birthDateStr, formatter);
+        LocalDateTime birthDateTime = birthDate.atStartOfDay();
+        Date date = Date.from(birthDateTime.atZone(ZoneId.systemDefault()).toInstant());
     {
-        usersService.updateUsers(Id, username, email, firstName, lastName, middleName, gender);
+        usersService.updateUsers(Id, username, email, firstName, lastName, middleName, gender, date);
     }
-}
+}}}
