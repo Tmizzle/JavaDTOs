@@ -1,11 +1,10 @@
 package com.dtotest.dto.Controller;
 
+import com.dtotest.dto.entity.Users;
 import com.dtotest.dto.service.dto.UserDTO;
 import com.dtotest.dto.service.interfaces.UsersService;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -41,15 +40,20 @@ public class UsersController {
                                       @RequestParam(required = false) String lastName,
                                       @RequestParam(required = false) String middleName,
                                       @RequestParam(required = false) String gender,
+                                      @RequestParam(required = false) String password,
                                       @RequestParam(required = false) String birthDateStr){
         if(birthDateStr != null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate birthDate = LocalDate.parse(birthDateStr, formatter);
             LocalDateTime birthDateTime = birthDate.atStartOfDay();
             Date date = Date.from(birthDateTime.atZone(ZoneId.systemDefault()).toInstant());
-            usersService.updateUsers(Id, username, email, firstName, lastName, middleName, gender, date);
+            usersService.updateUsers(Id, username, email, firstName, lastName, middleName, gender, date, password);
         } else {
-            usersService.updateUsers(Id, username, email, firstName, lastName, middleName, gender, null);
+            usersService.updateUsers(Id, username, email, firstName, lastName, middleName, gender, null, password);
         }
 }
+    @PostMapping
+    public void addNewUser(@RequestBody Users user){
+        usersService.addNewUser(user);
+    }
 }

@@ -12,7 +12,15 @@ import java.util.Date;
 public class Users {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+            name = "new_user_sequence",
+            sequenceName = "new_user_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "new_user_sequence"
+    )
     @Column(
             updatable = false,
             nullable = false
@@ -55,8 +63,7 @@ public class Users {
     private Date birthDate;
     private String password;
     @Column(
-            name = "old_password",
-            nullable = false
+            name = "old_password"
     )
     private String oldPassword;
     private String permission;

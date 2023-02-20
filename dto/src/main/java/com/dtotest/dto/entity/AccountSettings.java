@@ -1,17 +1,19 @@
 package com.dtotest.dto.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Table
 @Data
+@NoArgsConstructor
 public class AccountSettings {
 
     @Id
     @GeneratedValue(
-            strategy = GenerationType.IDENTITY
+            strategy = GenerationType.AUTO
     )
     @Column(
             updatable = false
@@ -44,5 +46,12 @@ public class AccountSettings {
             columnDefinition = "TEXT"
     )
     private String theme;
+
+    public AccountSettings(Country defaultCountry) {
+        this.theme = "Light";
+        this.language = "Hrvatski";
+        this.timezone = "Europe/Zagreb";
+        this.country = defaultCountry; // Set the default country
+    }
 
 }

@@ -28,8 +28,8 @@ public class UserDTO {
     private boolean verified;
     private String seniority;
     private String userCategory;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
     private Date updatedAt;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
     private Date createdAt;
 }
