@@ -53,5 +53,4 @@ public class AccountSettings {
         this.timezone = "Europe/Zagreb";
         this.country = defaultCountry; // Set the default country
     }
-
 }

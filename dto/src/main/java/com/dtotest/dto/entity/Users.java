@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 import java.util.Date;
 
 @Entity
@@ -38,6 +40,7 @@ public class Users {
             unique = true,
             nullable = false
     )
+    @Pattern(regexp = "^[a-zA-Z0-9_+&*-] + (?:\\.[a-zA-Z0-9_+&*-] + )*@(?:[a-zA-Z0-9-]+\\.) + [a-zA-Z]{2,7}")
     private String email;
     @Column(
             name = "first_name",

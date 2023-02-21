@@ -1,5 +1,6 @@
 package com.dtotest.dto.Controller;
 
+import com.dtotest.dto.entity.Country;
 import com.dtotest.dto.entity.Users;
 import com.dtotest.dto.service.dto.UserDTO;
 import com.dtotest.dto.service.interfaces.UsersService;
@@ -53,7 +54,7 @@ public class UsersController {
         }
 }
     @PostMapping
-    public void addNewUser(@RequestBody Users user){
-        usersService.addNewUser(user);
+    public void addNewUser(@RequestBody Users user, @RequestParam String country){
+        usersService.addNewUser(user, country);
     }
 }

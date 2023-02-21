@@ -1,15 +1,14 @@
 package com.dtotest.dto.service.interfaces;
 
 
-import com.dtotest.dto.dao.AccountSettingsRepo;
 import com.dtotest.dto.dao.CountryRepo;
 import com.dtotest.dto.dao.UserRepo;
 import com.dtotest.dto.entity.AccountSettings;
 import com.dtotest.dto.entity.Country;
 import com.dtotest.dto.entity.Users;
-import com.dtotest.dto.service.dto.AccountSettingsDTO;
 import com.dtotest.dto.service.dto.UserDTO;
 import com.dtotest.dto.service.mapper.UsersMapper;
+import lombok.*;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -22,21 +21,14 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@Data
 public class UsersService {
 
     private final UserRepo userRepo;
     private final UsersMapper usersMapper;
     private final CountryRepo countryRepo;
-    private final AccountSettingsRepo accountSettingsRepo;
     LocalDateTime currentDateTime = LocalDateTime.now();
     Date currentDate = java.util.Date.from(currentDateTime.atZone(ZoneId.systemDefault()).toInstant());
-
-    public UsersService(UserRepo userRepo, UsersMapper usersMapper, CountryRepo countryRepo, AccountSettingsRepo accountSettingsRepo) {
-        this.userRepo = userRepo;
-        this.usersMapper = usersMapper;
-        this.countryRepo = countryRepo;
-        this.accountSettingsRepo = accountSettingsRepo;
-    }
 
     public List<UserDTO> getUsers() {
         List<Users> users = userRepo.findAll();
@@ -44,8 +36,7 @@ public class UsersService {
         return userDTOs;
     }
 
-
-        public UserDTO getUserById(Integer id){
+    public UserDTO getUserById(Integer id){
         Users users = userRepo.findById(id).orElseThrow(() -> new IllegalStateException("" +
                 "account setting with id " + id + " does not exist"));
         return usersMapper.entityToDTO(users);
@@ -101,18 +92,38 @@ public class UsersService {
             else throw new IllegalArgumentException("You can't use same password");
         }
     }
-    public void addNewUser(Users users) {
+    public void addNewUser(Users users, String country) {
         Optional<Users> emailCheck = userRepo.findUserByEmail(users.getEmail());
+        Integer countryId = countryRepo.findCountry(country);
         if (emailCheck.isPresent()){
             throw new IllegalStateException("Email taken");
         }
-        if (users.getPassword().length() < 8){
+        if (users.getPassword().length() < 8) {
             throw new IllegalArgumentException("Password must be 8 or more characters long");
         }
-        Country defaultCountry = countryRepo.findById(1)
-                .orElseThrow(() -> new EntityNotFoundException("Country with ID 1 not found"));
-        AccountSettings accountSettings = new AccountSettings(defaultCountry);
-        users.setAccountSettings(accountSettings);
+        Country defaultCountry = countryRepo.findById(countryId)
+                .orElseThrow(() -> new EntityNotFoundException("Country with that ID not found"));
+        if(country.equals("Croatia")) {
+            AccountSettings accountSettings = new AccountSettings(defaultCountry);
+            accountSettings.setLanguage("Croatian");
+            accountSettings.setTimezone("Europe/Zagreb");
+            users.setAccountSettings(accountSettings);
+        }
+        else if(country.equals("Serbia")){
+            AccountSettings accountSettings = new AccountSettings(defaultCountry);
+            accountSettings.setLanguage("Serbian");
+            accountSettings.setTimezone("Europe/Beograd");
+            users.setAccountSettings(accountSettings);
+        }
+        else if (country.equals("Bosnia and Herzegovina")){
+            AccountSettings accountSettings = new AccountSettings(defaultCountry);
+            accountSettings.setLanguage("Bosnian");
+            accountSettings.setTimezone("Europe/Sarajevo");
+            users.setAccountSettings(accountSettings);
+        }
+        else {
+            throw new IllegalArgumentException("Wrong input!");
+        }
         users.setCreatedAt(currentDate);
         userRepo.save(users);
     }
