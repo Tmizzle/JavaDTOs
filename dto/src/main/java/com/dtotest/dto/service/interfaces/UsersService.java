@@ -19,6 +19,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @Data
@@ -52,7 +54,8 @@ public class UsersService {
                             Date date,
                             String password/*,
                             String seniority,
-                            String userCategory*/
+                            String userCategory,
+                            String profilePicture*/
     ) {
         Users users = userRepo.findById(Id).orElseThrow(() -> new IllegalStateException("" +
                 "account setting with id " + Id + " does not exist"));
@@ -63,21 +66,27 @@ public class UsersService {
         }
         if (email != null && email.length() > 0 && !Objects.equals(users.getEmail(), email)) {
             users.setEmail(email);
+            users.setUpdatedAt(currentDate);
         }
         if (firstName != null && firstName.length() > 0 && !Objects.equals(users.getFirstName(), firstName)) {
             users.setFirstName(firstName);
+            users.setUpdatedAt(currentDate);
         }
         if (lastName != null && lastName.length() > 0 && !Objects.equals(users.getLastName(), lastName)) {
             users.setLastName(lastName);
+            users.setUpdatedAt(currentDate);
         }
         if (middleName != null && middleName.length() > 0 && !Objects.equals(users.getMiddleName(), middleName)) {
             users.setMiddleName(middleName);
+            users.setUpdatedAt(currentDate);
         }
         if (gender != null && gender.length() > 0 && !Objects.equals(users.getGender(), gender)) {
             users.setGender(gender);
+            users.setUpdatedAt(currentDate);
         }
         if (date != null && !Objects.equals(users.getBirthDate(), date)) {
             users.setBirthDate(date);
+            users.setUpdatedAt(currentDate);
         }
         if (password != null) {
             if (!Objects.equals(users.getPassword(), password)) {
@@ -93,37 +102,41 @@ public class UsersService {
         }
     }
     public void addNewUser(Users users, String country) {
+        String emailRegex = "^(?!\\.)[a-zA-Z0-9._%+-]+(?!\\.|\\.{2,})[^.]@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        if (!pattern.matcher(users.getEmail()).matches() || users.getEmail().isEmpty()) {
+            throw new IllegalStateException("Email invalid");
+        }
         Optional<Users> emailCheck = userRepo.findUserByEmail(users.getEmail());
         Integer countryId = countryRepo.findCountry(country);
         if (emailCheck.isPresent()){
             throw new IllegalStateException("Email taken");
         }
-        if (users.getPassword().length() < 8) {
-            throw new IllegalArgumentException("Password must be 8 or more characters long");
-        }
         Country defaultCountry = countryRepo.findById(countryId)
                 .orElseThrow(() -> new EntityNotFoundException("Country with that ID not found"));
-        if(country.equals("Croatia")) {
-            AccountSettings accountSettings = new AccountSettings(defaultCountry);
-            accountSettings.setLanguage("Croatian");
-            accountSettings.setTimezone("Europe/Zagreb");
-            users.setAccountSettings(accountSettings);
+
+        AccountSettings accountSettings = new AccountSettings(defaultCountry);
+        switch(country) {
+            case "Croatia":
+                accountSettings.setLanguage("Croatian");
+                accountSettings.setTimezone("Europe/Zagreb");
+                break;
+            case "Serbia":
+                accountSettings.setLanguage("Serbian");
+                accountSettings.setTimezone("Europe/Beograd");
+                break;
+            case "Bosnia and Herzegovina":
+                accountSettings.setLanguage("Bosnian");
+                accountSettings.setTimezone("Europe/Sarajevo");
+            default:
+                throw new IllegalArgumentException("Wrong input!");
         }
-        else if(country.equals("Serbia")){
-            AccountSettings accountSettings = new AccountSettings(defaultCountry);
-            accountSettings.setLanguage("Serbian");
-            accountSettings.setTimezone("Europe/Beograd");
-            users.setAccountSettings(accountSettings);
+        Pattern passwordPattern = Pattern.compile("^(?=.*\\d)(?=.*[a-zA-Z]).{8,}$");
+        Matcher passwordMatcher = passwordPattern.matcher(users.getPassword());
+        if (!passwordMatcher.matches() || users.getPassword().isEmpty()) {
+            throw new IllegalStateException("Password must be at least 8 chars long, contain at least 1 number and 1 letter");
         }
-        else if (country.equals("Bosnia and Herzegovina")){
-            AccountSettings accountSettings = new AccountSettings(defaultCountry);
-            accountSettings.setLanguage("Bosnian");
-            accountSettings.setTimezone("Europe/Sarajevo");
-            users.setAccountSettings(accountSettings);
-        }
-        else {
-            throw new IllegalArgumentException("Wrong input!");
-        }
+        users.setAccountSettings(accountSettings);
         users.setCreatedAt(currentDate);
         userRepo.save(users);
     }

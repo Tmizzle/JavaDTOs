@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Pattern;
 import java.util.Date;
 
 @Entity
@@ -40,7 +38,7 @@ public class Users {
             unique = true,
             nullable = false
     )
-    @Pattern(regexp = "^[a-zA-Z0-9_+&*-] + (?:\\.[a-zA-Z0-9_+&*-] + )*@(?:[a-zA-Z0-9-]+\\.) + [a-zA-Z]{2,7}")
+    /*@Pattern(regexp = "^[a-zA-Z0-9_+&*-] + (?:\\.[a-zA-Z0-9_+&*-] + )*@(?:[a-zA-Z0-9-]+\\.) + [a-zA-Z]{2,7}")*/
     private String email;
     @Column(
             name = "first_name",
@@ -98,9 +96,31 @@ public class Users {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date updatedAt;
     @Column(
+            name = "id_updated_by"
+    )
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Integer idUpdatedBy;
+    @Column(
             name = "created_at"
     )
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;
+    @Column(
+            name = "profile_picture"
+    )
+    private String profilePicture;
+    @Column(
+            name = "created_by"
+    )
+    private Integer createdBy;
+    @Column(
+            name = "deleted"
+    )
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date deleted;
+    @Column(
+            name = "id_deleted_by"
+    )
+    private Integer idDeletedBy;
 
 }

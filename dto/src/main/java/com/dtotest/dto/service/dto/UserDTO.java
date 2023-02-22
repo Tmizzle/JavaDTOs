@@ -32,4 +32,10 @@ public class UserDTO {
     private Date updatedAt;
     @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
     private Date createdAt;
+    private Integer idUpdatedBy;
+    private String profilePicture;
+    private Integer createdBy;
+    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
+    private Date deleted;
+    private Integer idDeletedBy;
 }
