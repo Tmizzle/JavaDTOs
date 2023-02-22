@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.management.OperatingSystemMXBean;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api/holidays")
@@ -27,5 +29,10 @@ public class HolidaysController {
     @GetMapping(path = "{id}")
     public HolidaysDTO getHolidaysById(@PathVariable("id") Integer id){
         return holidaysService.getHolidaysById(id);
+    }
+
+    @GetMapping(path = "/find/{country}")
+    public List<HolidaysDTO> getHolidaysByCountry(@PathVariable("country") String country){
+        return holidaysService.getHolidaysByCountry(country);
     }
 }
