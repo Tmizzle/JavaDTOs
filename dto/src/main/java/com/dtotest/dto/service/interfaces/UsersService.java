@@ -66,6 +66,11 @@ public class UsersService {
                 "account setting with id " + Id + " does not exist"));
         // Update username if it has changed
         if (username != null && username.length() > 0 && !Objects.equals(users.getUsername(), username)) {
+            // check if username is taken
+            Optional<Users> usernameCheck = userRepo.findUserByUsername(username);
+            if (usernameCheck.isPresent()){
+                throw new IllegalStateException("Username taken");
+            }
             users.setUsername(username);
             users.setUpdatedAt(currentDate);
         }
@@ -137,6 +142,16 @@ public class UsersService {
         }
     }
     public void addNewUser(Users users, String country) {
+        // check if username is taken
+        Optional<Users> usernameCheck = userRepo.findUserByUsername(users.getUsername());
+        if (usernameCheck.isPresent()){
+            throw new IllegalStateException("Username taken");
+        }
+        Optional<Users> emailCheck = userRepo.findUserByEmail(users.getEmail());
+        // check if email is already taken
+        if (emailCheck.isPresent()){
+            throw new IllegalStateException("Email taken");
+        }
         // regular expression pattern for email validation
         String emailRegex = "^(?!\\.)[a-zA-Z0-9._%+-]+(?!\\.|\\.{2,})[^.]@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         Pattern pattern = Pattern.compile(emailRegex);
@@ -144,13 +159,8 @@ public class UsersService {
         if (!pattern.matcher(users.getEmail()).matches() || users.getEmail().isEmpty()) {
             throw new IllegalStateException("Email invalid");
         }
-        Optional<Users> emailCheck = userRepo.findUserByEmail(users.getEmail());
-        Integer countryId = countryRepo.findCountry(country);
-        // check if email is already taken
-        if (emailCheck.isPresent()){
-            throw new IllegalStateException("Email taken");
-        }
         // find country ID based on input string
+        Integer countryId = countryRepo.findCountry(country);
         Country defaultCountry = countryRepo.findById(countryId)
                 .orElseThrow(() -> new EntityNotFoundException("Country with that ID not found"));
 
