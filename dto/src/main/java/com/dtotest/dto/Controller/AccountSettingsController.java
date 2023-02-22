@@ -3,6 +3,7 @@ package com.dtotest.dto.Controller;
 
 import com.dtotest.dto.service.dto.AccountSettingsDTO;
 import com.dtotest.dto.service.interfaces.AccountSettingsService;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,14 +11,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/account_settings")
+@Data
 public class AccountSettingsController {
 
     private final AccountSettingsService accountSettingsService;
-
-    @Autowired
-    public AccountSettingsController(AccountSettingsService accountSettingsService) {
-        this.accountSettingsService = accountSettingsService;
-    }
 
     @GetMapping
     public List<AccountSettingsDTO> getAccountSettings(){

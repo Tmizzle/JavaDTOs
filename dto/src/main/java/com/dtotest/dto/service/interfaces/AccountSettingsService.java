@@ -5,6 +5,7 @@ import com.dtotest.dto.entity.AccountSettings;
 import com.dtotest.dto.entity.Country;
 import com.dtotest.dto.service.dto.AccountSettingsDTO;
 import com.dtotest.dto.service.mapper.AccountSettingsMapper;
+import lombok.Data;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -12,16 +13,11 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@Data
 public class AccountSettingsService {
 
     private final AccountSettingsRepo accountSettingsRepo;
     private final AccountSettingsMapper accountSettingsMapper;
-
-    public AccountSettingsService(AccountSettingsRepo accountSettingsRepo, AccountSettingsMapper accountSettingsMapper) {
-        this.accountSettingsRepo = accountSettingsRepo;
-        this.accountSettingsMapper = accountSettingsMapper;
-    }
-
 
     public List<AccountSettingsDTO> getAccountSettings() {
         List<AccountSettings> accountSettings = accountSettingsRepo.findAll();
