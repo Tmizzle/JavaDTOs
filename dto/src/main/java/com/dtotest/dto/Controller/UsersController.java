@@ -42,15 +42,18 @@ public class UsersController {
                                       @RequestParam(required = false) String middleName,
                                       @RequestParam(required = false) String gender,
                                       @RequestParam(required = false) String password,
-                                      @RequestParam(required = false) String birthDateStr){
+                                      @RequestParam(required = false) String birthDateStr,
+                                      @RequestParam(required = false) String seniority,
+                                      @RequestParam(required = false) String userCategory,
+                                      @RequestParam(required = false) String profilePicture){
         if(birthDateStr != null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate birthDate = LocalDate.parse(birthDateStr, formatter);
             LocalDateTime birthDateTime = birthDate.atStartOfDay();
             Date date = Date.from(birthDateTime.atZone(ZoneId.systemDefault()).toInstant());
-            usersService.updateUsers(Id, username, email, firstName, lastName, middleName, gender, date, password);
+            usersService.updateUsers(Id, username, email, firstName, lastName, middleName, gender, date, password, seniority, userCategory, profilePicture);
         } else {
-            usersService.updateUsers(Id, username, email, firstName, lastName, middleName, gender, null, password);
+            usersService.updateUsers(Id, username, email, firstName, lastName, middleName, gender, null, password, seniority, userCategory, profilePicture);
         }
 }
     @PostMapping
