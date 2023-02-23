@@ -21,16 +21,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.annotation.DirtiesContext;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
-@DataJpaTest
+@SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
-@EnableJpaRepositories(basePackages = "com.dtotest.dto.dao")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UsersServiceTest {
 
     @Mock
