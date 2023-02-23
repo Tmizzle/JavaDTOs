@@ -44,7 +44,7 @@ public class UsersService {
     // Retrieves a user by his ID
     public UserDTO getUserById(Integer id){
         Users users = userRepo.findById(id).orElseThrow(() -> new IllegalStateException("" +
-                "account setting with id " + id + " does not exist"));
+                "user with id " + id + " does not exist"));
         return usersMapper.entityToDTO(users);
     }
     @Transactional
@@ -63,7 +63,7 @@ public class UsersService {
     ) {
 
         Users users = userRepo.findById(Id).orElseThrow(() -> new IllegalStateException("" +
-                "account setting with id " + Id + " does not exist"));
+                "user with id " + Id + " does not exist"));
         // Update username if it has changed
         if (username != null && username.length() > 0 && !Objects.equals(users.getUsername(), username)) {
             // check if username is taken
@@ -185,7 +185,7 @@ public class UsersService {
         Pattern passwordPattern = Pattern.compile("^(?=.*\\d)(?=.*[a-zA-Z]).{8,}$");
         Matcher passwordMatcher = passwordPattern.matcher(users.getPassword());
         // check if password is valid
-        if (!passwordMatcher.matches() || users.getPassword().isEmpty()) {
+        if (!passwordMatcher.matches()) {
             throw new IllegalStateException("Password must be at least 8 chars long, contain at least 1 number and 1 letter");
         }
         // hash the password using BCrypt

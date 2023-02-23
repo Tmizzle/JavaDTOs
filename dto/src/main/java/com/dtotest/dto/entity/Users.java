@@ -2,6 +2,7 @@ package com.dtotest.dto.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.Date;
 @Entity
 @Table
 @Data
+@NoArgsConstructor
 public class Users {
 
     @Id
@@ -123,4 +125,17 @@ public class Users {
     )
     private Integer idDeletedBy;
 
+    public Users(String username, String email, String firstName, String lastName, String middleName, String gender, Date birthDate, String password, String seniority, String userCategory, String profilePicture) {
+        this.username = username;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleName = middleName;
+        this.gender = gender;
+        this.birthDate = birthDate;
+        this.password = password;
+        this.seniority = seniority;
+        this.userCategory = userCategory;
+        this.profilePicture = profilePicture;
+    }
 }

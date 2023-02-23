@@ -42,5 +42,4 @@ public class Holidays {
             nullable = false
     )
     private String name;
-
 }

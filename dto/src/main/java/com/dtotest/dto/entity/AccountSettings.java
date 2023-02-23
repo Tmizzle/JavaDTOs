@@ -53,4 +53,10 @@ public class AccountSettings {
         this.timezone = "Europe/Zagreb";
         this.country = defaultCountry; // Set the default country
     }
+
+    public AccountSettings(String timezone, String language, String theme) {
+        this.timezone = timezone;
+        this.language = language;
+        this.theme = theme;
+    }
 }
