@@ -29,7 +29,6 @@ public class Client {
     )
     private Integer id;
     @Column(
-            unique = true,
             nullable = false
     )
     private String name;
@@ -40,34 +39,28 @@ public class Client {
     )
     private String internalCode;
     @Column(
-            unique = true,
             nullable = false
     )
     private String industry;
     @Column(
-            unique = true,
             nullable = false
     )
     private String country;
     @Column(
-            unique = true,
             nullable = false
     )
     private String city;
     @Column(
             name = "street_name",
-            unique = true,
             nullable = false
     )
     private String streetName;
     @Column(
             name = "street_number",
-            unique = true,
             nullable = false
     )
     private String streetNumber;
     @Column(
-            unique = true,
             nullable = false
     )
     private String zip;

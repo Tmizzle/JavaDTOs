@@ -1,11 +1,8 @@
 package com.dtotest.dto.service.interfaces;
 
 import com.dtotest.dto.dao.ClientRepo;
-import com.dtotest.dto.entity.AccountSettings;
-import com.dtotest.dto.entity.Client;
-import com.dtotest.dto.entity.Holidays;
+import com.dtotest.dto.entity.*;
 import com.dtotest.dto.service.dto.ClientDTO;
-import com.dtotest.dto.service.dto.HolidaysDTO;
 import com.dtotest.dto.service.mapper.ClientMapper;
 import lombok.Data;
 import org.springframework.stereotype.Service;
@@ -13,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Data
@@ -37,6 +35,7 @@ public class ClientService {
     public void updateClient(Integer Id,
                              String name,
                              String internalCode,
+                             String industry,
                              String country,
                              String city,
                              String streetName,
@@ -49,7 +48,14 @@ public class ClientService {
             client.setName(name);
         }
         if (internalCode != null && internalCode.length() > 0 && !Objects.equals(client.getInternalCode(), internalCode)) {
+            Optional<Client> clientCodeCheck = clientRepo.findClientByInternalCode(internalCode);
+            if (clientCodeCheck.isPresent()){
+                throw new IllegalStateException("Internal Code already exists");
+            }
             client.setInternalCode(internalCode);
+        }
+        if (industry != null && industry.length() > 0 && !Objects.equals(client.getIndustry(), industry)) {
+            client.setIndustry(industry);
         }
         if (country != null && country.length() > 0 && !Objects.equals(client.getCountry(), country)) {
             client.setCountry(country);
@@ -66,6 +72,12 @@ public class ClientService {
         if (zip != null && zip.length() > 0 && !Objects.equals(client.getZip(), zip)) {
             client.setZip(zip);
         }
-
+    }
+    public void addNewClient(Client client){
+        Optional<Client> clientCodeCheck = clientRepo.findClientByInternalCode(client.getInternalCode());
+        if (clientCodeCheck.isPresent()){
+            throw new IllegalStateException("Internal Code already exists");
+        }
+        clientRepo.save(client);
     }
 }

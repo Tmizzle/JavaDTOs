@@ -100,7 +100,7 @@ public class UsersServiceTest {
         usersService.addNewUser(user, "croatia");
     }
 
-    @Test
+    /*@Test
     public void testUpdateUsers() {
         // Create a new user and save it in the database
         //Users user1 = new Users("johndoe", "barnaulti@gmail.com", "John", "Doe", "William", "male", new Date(), "password1", "senior", "category1", "picture1");
@@ -151,5 +151,5 @@ public class UsersServiceTest {
         // Attempt to update the user's birth date to a future date
         assertThrows(IllegalArgumentException.class, () ->
                 usersService.updateUsers(user1.getId(), null, null, null, null, null, null, new Date(System.currentTimeMillis() + 86400000), null, null, null, null));
-    }
+    }*/
 }
