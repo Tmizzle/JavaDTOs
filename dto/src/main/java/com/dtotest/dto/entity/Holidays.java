@@ -1,7 +1,9 @@
 package com.dtotest.dto.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,6 +11,8 @@ import java.util.Date;
 @Entity
 @Table
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Holidays {
 
     @Id
@@ -42,4 +46,5 @@ public class Holidays {
             nullable = false
     )
     private String name;
+
 }

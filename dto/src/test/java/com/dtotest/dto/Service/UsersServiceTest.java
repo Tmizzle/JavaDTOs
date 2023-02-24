@@ -1,4 +1,4 @@
-package com.dtotest.dto;
+package com.dtotest.dto.Service;
 
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -22,11 +22,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.test.annotation.DirtiesContext;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
@@ -100,14 +97,15 @@ public class UsersServiceTest {
 
     @Test(expected = EntityNotFoundException.class)
     public void testAddNewUser_WrongCountry() {
-        usersService.addNewUser(user, "Croatia");
+        usersService.addNewUser(user, "croatia");
     }
 
-    /*@Test
+    @Test
     public void testUpdateUsers() {
         // Create a new user and save it in the database
-        Users user1 = new Users("johndoe", "barnaulti@gmail.com", "John", "Doe", "William", "male", new Date(), "password1", "senior", "category1", "picture1");
-        *//*user1.setUsername("johndoe");
+        //Users user1 = new Users("johndoe", "barnaulti@gmail.com", "John", "Doe", "William", "male", new Date(), "password1", "senior", "category1", "picture1");
+        Users user1 = new Users();
+        user1.setUsername("johndoe");
         user1.setEmail("barnaulti@bloglines.com");
         user1.setFirstName("John");
         user1.setLastName("Doe");
@@ -117,35 +115,41 @@ public class UsersServiceTest {
         user1.setPassword("password1");
         user1.setSeniority("senior");
         user1.setUserCategory("category1");
-        user1.setProfilePicture("picture1");*//*
-        user1 = userRepo.save(user1);
+        user1.setProfilePicture("picture1");
+        userRepo.save(user1);
 
         // Update the user's username, email, and password
         String newUsername = "janedoe";
         String newEmail = "janedoe@example.com";
         String newPassword = "newpassword1";
-        usersService.updateUsers(1, newUsername, newEmail, null, null, null, null, null, newPassword, null, null, null);
+        usersService.updateUsers(user1.getId(), newUsername, newEmail, null, null, null, null, null, newPassword, null, null, null);
+
         // Verify that the user's username, email, and password have been updated
-        Users updatedUser = userRepo.findById(1).get();
+        Users updatedUser = userRepo.findById(user1.getId()).get();
         assertEquals(newUsername, updatedUser.getUsername());
         assertEquals(newEmail, updatedUser.getEmail());
         assertTrue(BCrypt.checkpw(newPassword, updatedUser.getPassword()));
 
         // Attempt to update the user's username to a name that is already taken
-        assertThrows(IllegalStateException.class, () -> usersService.updateUsers(1, "johndoe", null, null, null, null, null, null, null, null, null, null));
+        assertThrows(IllegalStateException.class, () ->
+                usersService.updateUsers(user1.getId(), "johndoe", null, null, null, null, null, null, null, null, null, null));
 
         // Attempt to update the user's password to a weak password
-        assertThrows(IllegalStateException.class, () -> usersService.updateUsers(1, null, null, null, null, null, null, null, "weak", null, null, null));
+        assertThrows(IllegalStateException.class, () ->
+                usersService.updateUsers(user1.getId(), null, null, null, null, null, null, null, "weak", null, null, null));
 
         // Attempt to update the user's password to a password that has been used recently
         String oldPassword = user1.getPassword();
         usersService.updateUsers(user1.getId(), null, null, null, null, null, null, null, "newpassword1", null, null, null);
-        assertThrows(IllegalArgumentException.class, () -> usersService.updateUsers(1, null, null, null, null, null, null, null, oldPassword, null, null, null));
+        assertThrows(IllegalArgumentException.class, () ->
+                usersService.updateUsers(user1.getId(), null, null, null, null, null, null, null, oldPassword, null, null, null));
 
         // Attempt to update the user's password with the same password
-        assertThrows(IllegalArgumentException.class, () -> usersService.updateUsers(1, null, null, null, null, null, null, null, "newpassword1", null, null, null));
+        assertThrows(IllegalArgumentException.class, () ->
+                usersService.updateUsers(user1.getId(), null, null, null, null, null, null, null, "newpassword1", null, null, null));
 
         // Attempt to update the user's birth date to a future date
-        assertThrows(IllegalArgumentException.class, () -> usersService.updateUsers(1, null, null, null, null, null, null, new Date(System.currentTimeMillis() + 86400000), null, null, null, null));
-    }*/
+        assertThrows(IllegalArgumentException.class, () ->
+                usersService.updateUsers(user1.getId(), null, null, null, null, null, null, new Date(System.currentTimeMillis() + 86400000), null, null, null, null));
+    }
 }
