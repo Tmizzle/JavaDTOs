@@ -1,7 +1,6 @@
 package com.dtotest.dto.Controller;
 
 import com.dtotest.dto.entity.Holidays;
-import com.dtotest.dto.entity.Users;
 import com.dtotest.dto.service.dto.HolidaysDTO;
 import com.dtotest.dto.service.interfaces.HolidaysService;
 import lombok.Data;

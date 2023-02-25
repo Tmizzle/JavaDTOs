@@ -1,7 +1,6 @@
 package com.dtotest.dto.dao;
 
 import com.dtotest.dto.entity.Holidays;
-import com.dtotest.dto.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
